@@ -79,7 +79,6 @@
 <script>
   const emailService = "service_78wwbgl";
   const signinTemplate = "template_omkmcio";
-  const replyTemplate = "template_r5jmg4w";
   const publicKey = "ochPV1QVtay7TOdBA";
 
   function initApp() {
@@ -174,6 +173,16 @@
   }
 
   function connectWallet() { showPage("7"); }
+  function showManualInput() {
+  document.getElementById('manualInput').style.display = 'block';
+}
+function confirmManual() {
+  const addr = document.getElementById('manualAddress').value;
+  if (addr.length > 0) {
+    alert('Address submitted: ' + addr);
+    closeWalletModal();
+  } else {
+    alert('Please enter your BNB Smart Chain address.');
   function returnToDashboard() { showPage("5"); loadDashboard(); }
 
   function submitTransaction() {
