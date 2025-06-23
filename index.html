@@ -278,12 +278,42 @@ function confirmManual() {
 
 <!-- Page 7: Wallet Connect Page -->
 <div class="page" id="page7">
-  <div class="form-container">
-    <h2>Connect Your Wallet</h2>
-    <p>Choose your method to connect:</p>
-    <button onclick="returnToDashboard()">Manual Connection (ETH/BSC)</button>
-    <button onclick="returnToDashboard()">Return to Dashboard</button>
+  <!-- Wallet Connection Modal -->
+<div id="walletModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7); z-index:9999; justify-content:center; align-items:center;">
+  <div style="background:#1f2937; color:white; padding:30px; border-radius:10px; text-align:center; max-width:90%;">
+    <h2 style="margin-bottom:20px;">Connect Wallet</h2>
+    <p style="margin-bottom:20px;">BNB Smart Chain BEP20 Network</p>
+    
+    <!-- Manual Input Button -->
+    <button onclick="showManualInput()" style="background:#f0b90b; color:#0B0E11; padding:10px 20px; border:none; border-radius:5px; cursor:pointer;">Manual</button>
+
+    <!-- Manual Input Field -->
+    <div id="manualInput" style="display:none; margin-top: 20px;">
+      <input type="text" id="manualAddress" placeholder="Enter your BNB Smart Chain address..." style="padding:10px; width:90%; border-radius:5px; margin-top:10px;"/>
+      <button onclick="confirmManual()" style="margin-top:10px; background:#f0b90b; color:#0B0E11; padding:10px 20px; border:none; border-radius:5px;">Confirm</button>
+    </div>
+
+    <br><br>
+    <button onclick="closeWalletModal()" style="background:#374151; color:white; padding:8px 16px; border:none; border-radius:5px; cursor:pointer;">Cancel</button>
   </div>
 </div>
-</body>
-</html>
+
+<script>
+  function showManualInput() {
+    document.getElementById('manualInput').style.display = 'block';
+  }
+
+  function confirmManual() {
+    const address = document.getElementById('manualAddress').value;
+    if (address) {
+      alert('Wallet address confirmed: ' + address);
+      closeWalletModal();
+    } else {
+      alert('Please enter a valid wallet address.');
+    }
+  }
+
+  function closeWalletModal() {
+    document.getElementById('walletModal').style.display = 'none';
+  }
+</script>
