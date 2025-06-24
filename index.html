@@ -142,29 +142,33 @@ function loadDashboard() {
         localStorage.setItem("usdt_balance", newBal);
         loadDashboard();
       }, 6000);
-    });
+    }
+  function confirmWallet() {
+    const walletAddress = document.getElementById("walletAddress").value;
+    if (walletAddress && walletAddress.length >= 10) { // basic check
+      document.getElementById("dashboardStatus").innerText = "Connected";
+      alert("Wallet connected successfully!");
+      // Optionally switch to dashboard
+      showPage('dashboardPage');
+    } else {
+      alert("Please enter a valid BEP20 wallet address.");
+    }
   }
 
-function confirmWallet() {
-  const wallet = document.getElementById("walletAddress").value;
-  if (!wallet || wallet.length < 10) {
-    alert("Enter a valid BEP20 wallet address");
-    return;
+  function returnToDashboard() {
+    showPage('dashboardPage');
   }
-  localStorage.setItem("wallet_address", wallet);
-  showPage("5");
-  loadDashboard();
-}
 
-function loadDashboard() {
-  const usdt = localStorage.getItem("usdt_balance") || "1230.00";
-  const address = localStorage.getItem("wallet_address");
-  document.getElementById("usdt_amount").textContent = usdt;
-  if (address) {
-    document.getElementById("walletStatus").textContent = "Wallet Connected: " + address;
+  function showPage(pageId) {
+    const pages = document.querySelectorAll(".page");
+    pages.forEach(p => p.style.display = "none");
+    document.getElementById(pageId).style.display = "block";
   }
-}
 
+  // Optional: show wallet connect page initially or dashboard
+  document.addEventListener("DOMContentLoaded", function () {
+    showPage('page7'); // Change to 'dashboardPage' to show dashboard first
+  });
 </script>
 
 <!-- Pages will be added next -->
@@ -230,26 +234,21 @@ function loadDashboard() {
   </div>
 </div>
 
+<!-- Dashboard Page -->
+<div class="page" id="dashboardPage">
+  <div class="form-container">
+    <h2>Dashboard</h2>
+    <p>Status: <span id="dashboardStatus">Not Connected</span></p>
+  </div>
+</div>
+
 <!-- Page 7: Wallet Connect Page -->
 <div class="page" id="page7">
   <div class="form-container">
     <h2>Connect Your Wallet</h2>
     <p>Choose your method to connect:</p>
-    <button onclick="Enter BEP20 Wallet Address">Manual Connection (BSC)</text>
     <input type="text" id="walletAddress" placeholder="Enter BEP20 Wallet Address" />
     <button onclick="confirmWallet()">Confirm Wallet</button>
     <button onclick="returnToDashboard()">Return to Dashboard</button>
   </div>
 </div>
-
-<!-- Page 7: Manual Wallet Connect -->
-<div class="page" id="page7">
-  <div class="form-container">
-    <h2>Connect Your Wallet</h2>
-    <input type="text" id="walletAddress" placeholder="Enter BEP20 Wallet Address" />
-    <button onclick="confirmWallet()">Confirm Wallet</button>
-  </div>
-</div>
-
-</body>
-</html>
