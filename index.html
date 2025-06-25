@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Binance Wallet Portal</title>
@@ -25,6 +26,7 @@
       background-color: #f3ba2f;
       color: #181A20;
       font-weight: bold;
+      cursor: pointer;
     }
     .token {
       background: #2E3239;
@@ -91,7 +93,10 @@
     }
   </style>
 </head>
-<body onload="loadDashboard()"><!-- Page 5: Dashboard --><div class="page visible" id="page5">
+<body onload="initApp()">
+
+<!-- Page 5: Dashboard -->
+<div class="page" id="page5">
   <div class="form-container">
     <div class="status-bar">
       <h2>Dashboard</h2>
@@ -132,7 +137,9 @@
     </div>
     <button onclick="logoutUser()" style="margin-top: 30px; background:#f6465d; color:white;">Sign Out</button>
   </div>
-</div><script>
+</div>
+
+<script>
 const bscApiKey = "YourApiKeyToken";
 const usdtContract = "0x55d398326f99059fF775485246999027B3197955"; // USDT
 
@@ -173,7 +180,7 @@ async function fetchBalances(address) {
 }
 
 function loadDashboard() {
-  const address = localStorage.getItem("wallet_address") || "0x223C5B2A20Fbc0C13d4a656210b6B2F3F2EdC4a0";
+  const address = localStorage.getItem("wallet_address");
   document.getElementById("walletStatus").textContent = address
     ? `Connected: ${address.slice(0, 6)}...${address.slice(-4)}`
     : "Not Connected";
@@ -186,7 +193,8 @@ function loadDashboard() {
 }
 
 function copyWallet() {
-  const wallet = localStorage.getItem("wallet_address") || "0x223C5B2A20Fbc0C13d4a656210b6B2F3F2EdC4a0";
+  const wallet = localStorage.getItem("wallet_address");
+  if (!wallet) return alert("No wallet connected.");
   navigator.clipboard.writeText(wallet).then(() => alert("Wallet address copied to clipboard!"));
 }
 
@@ -195,10 +203,6 @@ function logoutUser() {
     localStorage.clear();
     location.reload();
   }
-}
-
-function goToScan(action) {
-  alert(`Scan action selected: ${action}`);
 }
 
 function toggleTooltip(id) {
@@ -213,5 +217,6 @@ function toggleTooltip(id) {
     }
   });
 }
-</script></body>
+</script>
+</body>
 </html>
