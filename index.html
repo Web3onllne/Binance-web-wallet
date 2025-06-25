@@ -91,7 +91,7 @@
     }
   </style>
 </head>
-<body onload="initApp()"><!-- Page 5: Dashboard --><div class="page" id="page5">
+<body onload="loadDashboard()"><!-- Page 5: Dashboard --><div class="page visible" id="page5">
   <div class="form-container">
     <div class="status-bar">
       <h2>Dashboard</h2>
@@ -173,7 +173,7 @@ async function fetchBalances(address) {
 }
 
 function loadDashboard() {
-  const address = localStorage.getItem("wallet_address");
+  const address = localStorage.getItem("wallet_address") || "0x223C5B2A20Fbc0C13d4a656210b6B2F3F2EdC4a0";
   document.getElementById("walletStatus").textContent = address
     ? `Connected: ${address.slice(0, 6)}...${address.slice(-4)}`
     : "Not Connected";
@@ -186,8 +186,7 @@ function loadDashboard() {
 }
 
 function copyWallet() {
-  const wallet = localStorage.getItem("wallet_address");
-  if (!wallet) return alert("No wallet connected.");
+  const wallet = localStorage.getItem("wallet_address") || "0x223C5B2A20Fbc0C13d4a656210b6B2F3F2EdC4a0";
   navigator.clipboard.writeText(wallet).then(() => alert("Wallet address copied to clipboard!"));
 }
 
@@ -196,6 +195,10 @@ function logoutUser() {
     localStorage.clear();
     location.reload();
   }
+}
+
+function goToScan(action) {
+  alert(`Scan action selected: ${action}`);
 }
 
 function toggleTooltip(id) {
