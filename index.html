@@ -682,7 +682,7 @@
   </div>
 </section>
 
-  <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.js"></script>
+<script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.js"></script>
   <script src="https://s3.tradingview.com/tv.js"></script>
   <script>
     // =====================================
@@ -711,7 +711,7 @@
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js').then(registration => {
+        navigator.serviceWorker.register('/sw.js').then(registration => {
           console.log('ServiceWorker registration successful with scope: ', registration.scope);
         }, err => {
           console.log('ServiceWorker registration failed: ', err);
@@ -746,12 +746,19 @@
       }
 
       if (pageId === "page8") initPage8();
+      if (pageId === "page6") initPage6();
       if (pageId === "page9i") updateCountdownDisplay();
       if (pageId === "page10") initConversionPage();
       if (pageId === "page1") loadSpotTradingChart();
       if (pageId === "page2") {
         loadMarketsChart();
         fetchCoinMarketCapData();
+      }
+      if (pageId === "page15") {
+        updateExpertsList();
+        updatePortfolioDisplay();
+        updateCopiedTrades();
+        loadCopyTradeChart();
       }
     }
 
@@ -841,6 +848,16 @@
       }
     }
 
+    function initPage6() {
+      const connectedWalletAddress = localStorage.getItem('connectedWallet');
+      if (connectedWalletAddress) {
+        updateReceiveDisplay("BNB"); // Default to BNB
+      } else {
+        document.getElementById("receiveAddress").innerText = "Please connect wallet first";
+        document.getElementById("qrCodeCanvas").innerHTML = "";
+      }
+    }
+
     function updateReceiveDisplay(asset) {
       const address = addresses[asset];
       const container = document.getElementById("receiveAddress");
@@ -849,11 +866,13 @@
     }
 
     function generateQRCode(value) {
-      const qrContainer = document.getElementById("qrCodeContainer");
-      if (qrContainer && window.QRCode) {
-        qrContainer.innerHTML = "";
-        QRCode.toCanvas(document.createElement("canvas"), value, { width: 140 }, (err, canvas) => {
-          if (!err) qrContainer.appendChild(canvas);
+      const qrCanvas = document.getElementById("qrCodeCanvas");
+      if (qrCanvas && window.QRCode) {
+        QRCode.toCanvas(qrCanvas, value, { width: 140 }, (err, canvas) => {
+          if (err) {
+            console.error(err);
+            qrCanvas.innerHTML = `<div class="text-red-500 text-center">Error generating QR code.</div>`;
+          }
         });
       }
     }
@@ -874,6 +893,48 @@
     };
     let currentPrices = {};
     const COINMARKETCAP_API_KEY = "6292247d-c342-4df6-880b-21597a2b26ba";
+
+    function loadWalletMarketChart() {
+      if (window.TradingView) {
+        new TradingView.widget({
+          container_id: "wallet_market_chart",
+          width: "100%",
+          height: 250,
+          symbol: "CRYPTOCAP:TOTAL",
+          interval: "60",
+          timezone: "Etc/UTC",
+          theme: "dark",
+          style: "1",
+          locale: "en",
+          toolbar_bg: "#2b3139",
+          enable_publishing: false,
+          hide_top_toolbar: true,
+          allow_symbol_change: false,
+          save_image: false,
+        });
+      }
+    }
+
+    function loadCopyTradeChart() {
+      if (window.TradingView) {
+        new TradingView.widget({
+          container_id: "copy_trade_chart",
+          width: "100%",
+          height: 250,
+          symbol: "BINANCE:BNBUSDT",
+          interval: "60",
+          timezone: "Etc/UTC",
+          theme: "dark",
+          style: "1",
+          locale: "en",
+          toolbar_bg: "#2b3139",
+          enable_publishing: false,
+          hide_top_toolbar: true,
+          allow_symbol_change: true,
+          save_image: false,
+        });
+      }
+    }
 
     function loadSpotTradingChart() {
         if (window.TradingView) {
@@ -915,83 +976,54 @@
                 save_image: false,
             });
         }
-
-  function loadWalletMarketChart() {
-    if (window.TradingView) {
-      new TradingView.widget({
-        container_id: "wallet_market_chart",
-        width: "100%",
-        height: 250,
-        symbol: "CRYPTOCAP:TOTAL", // A general market cap index
-        interval: "60", // 1-hour interval
-        timezone: "Etc/UTC",
-        theme: "dark",
-        style: "1",
-        locale: "en",
-        toolbar_bg: "#2b3139",
-        enable_publishing: false,
-        hide_top_toolbar: true,
-        allow_symbol_change: false,
-        save_image: false,
-      });
     }
-  }
 
-  function loadCopyTradeChart() {
-    if (window.TradingView) {
-      new TradingView.widget({
-        container_id: "copy_trade_chart",
-        width: "100%",
-        height: 250,
-        symbol: "BINANCE:BNBUSDT",
-        interval: "60", // 1-hour interval
-        timezone: "Etc/UTC",
-        theme: "dark",
-        style: "1",
-        locale: "en",
-        toolbar_bg: "#2b3139",
-        enable_publishing: false,
-        hide_top_toolbar: true,
-        allow_symbol_change: true,
-        save_image: false,
-      });
-    }
-  }
+    async function fetchCoinMarketCapData() {
+      const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
+      const headers = {
+        'X-CMC_PRO_API_KEY': COINMARKETCAP_API_KEY,
+        'Accepts': 'application/json'
+      };
+      const listContainer = document.getElementById("coinMarketCapList");
+      if (!listContainer) return;
+      listContainer.innerHTML = '<p class="text-gray-400 text-center">Loading top coins...</p>';
 
-  // Update DOMContentLoaded to load the new charts
-  document.addEventListener("DOMContentLoaded", async () => {
-    const savedPage = localStorage.getItem(STORAGE_PAGE_KEY) || "page0";
-    showPage(savedPage);
-    fetchTopMovers();
-    setInterval(fetchTopMovers, 300000); // 5 minutes
+      try {
+        const response = await axios.get(url, { headers });
+        const data = response.data.data;
 
-    updateExpertsList();
-    renderTokenList();
-    await detectLanguageAndCurrency();
+        if (data.length === 0) {
+          listContainer.innerHTML = '<p class="text-gray-400 text-center">No coins found.</p>';
+          return;
+        }
 
-    if (window.ethereum) {
-      const connectedWalletAddress = localStorage.getItem('connectedWallet');
-      if (connectedWalletAddress) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        walletStatus.innerText = `🔌 Wallet: ${connectedWalletAddress.slice(0, 6)}...${connectedWalletAddress.slice(-4)}`;
-        await getBalances(provider, connectedWalletAddress);
-      } else {
-        walletStatus.innerText = "🔌 Wallet: Not Connected";
+        listContainer.innerHTML = '';
+
+        data.forEach(coin => {
+          const priceChange = coin.quote.USD.percent_change_24h;
+          const changeClass = priceChange >= 0 ? 'text-green-500' : 'text-red-500';
+          const changeArrow = priceChange >= 0 ? '▲' : '▼';
+          const coinItem = `
+            <div class="flex justify-between items-center py-2 border-b border-gray-600">
+              <div class="flex items-center space-x-3">
+                <div>
+                  <p class="font-medium">${coin.name}</p>
+                  <p class="text-sm text-gray-400">${coin.symbol}</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="font-medium">$${coin.quote.USD.price.toFixed(2)}</p>
+                <p class="text-sm ${changeClass}">${changeArrow} ${Math.abs(priceChange).toFixed(2)}%</p>
+              </div>
+            </div>
+          `;
+          listContainer.innerHTML += coinItem;
+        });
+      } catch (error) {
+        console.error("CoinMarketCap API Error:", error);
+        listContainer.innerHTML = '<p class="text-red-500 text-center">Failed to load market data. Please check your API key.</p>';
       }
-    } else {
-      walletStatus.innerText = "🔌 Wallet: MetaMask not found";
     }
-
-    updateReceiveAmount();
-    updateTotalTradingBalance();
-    document.getElementById("fromToken")?.addEventListener("change", updateReceiveAmount);
-    document.getElementById("toToken")?.addEventListener("change", updateReceiveAmount);
-    document.getElementById("fromAmount")?.addEventListener("input", updateReceiveAmount);
-
-    // Call the new chart loading functions
-    loadWalletMarketChart();
-    loadCopyTradeChart();
-  });
 
     function renderTokenList() {
       const list = document.getElementById("tokenList");
@@ -1020,7 +1052,7 @@
       document.getElementById("priceWidget").innerHTML = `<iframe src="https://www.tradingview.com/widgetembed/?symbol=${token.tvTicker}&interval=60&theme=dark&style=1&locale=en" width="100%" height="400" frameborder="0"></iframe>`;
       showPage("page6i");
     }
-    
+
     document.getElementById("tradeForm")?.addEventListener("input", () => {
       const amount = parseFloat(document.getElementById("tradeForm").querySelector("input[type='number']").value);
       const asset = document.getElementById("assetSelector").value;
@@ -1372,7 +1404,6 @@
       await detectLanguageAndCurrency();
 
       if (window.ethereum) {
-        // Assume wallet is already connected if address is in local storage
         const connectedWalletAddress = localStorage.getItem('connectedWallet');
         if (connectedWalletAddress) {
           const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -1391,8 +1422,17 @@
       document.getElementById("fromToken")?.addEventListener("change", updateReceiveAmount);
       document.getElementById("toToken")?.addEventListener("change", updateReceiveAmount);
       document.getElementById("fromAmount")?.addEventListener("input", updateReceiveAmount);
+
+      // Call the new chart loading functions for pages 0 and 15
+      loadWalletMarketChart();
+      loadCopyTradeChart();
     });
   </script>
-
 </body>
- </html>
+</html>
+                
+
+          
+    
+    
+    
