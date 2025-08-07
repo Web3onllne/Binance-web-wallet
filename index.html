@@ -131,97 +131,106 @@
   </div>
 
   <section id="page0" class="page active-page bg-[#1E2329] min-h-screen text-white pt-20">
-    <main class="p-4 space-y-4">
-      <div class="card bg-[#2b3139] p-4 rounded-2xl shadow-lg">
-        <h2 class="text-sm text-gray-400 font-medium">Total Assets</h2>
-        <p id="totalAssets" class="text-3xl mt-2 text-[#FCD535] font-bold">$0.00</p>
-      </div>
+  <main class="p-4 space-y-4">
+    <div class="card bg-[#2b3139] p-4 rounded-2xl shadow-lg">
+      <h2 class="text-sm text-gray-400 font-medium">Total Assets</h2>
+      <p id="totalAssets" class="text-3xl mt-2 text-[#FCD535] font-bold">$0.00</p>
+    </div>
 
-      <div class="flex justify-between space-x-2">
-        <button onclick="showPage('page8')" class="flex-1 bg-[#2b3139] text-[#FCD535] p-3 rounded-lg flex flex-col items-center justify-center space-y-1">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
-          <span class="text-sm font-medium">Send</span>
-        </button>
-        <button onclick="showPage('page6')" class="flex-1 bg-[#2b3139] text-[#FCD535] p-3 rounded-lg flex flex-col items-center justify-center space-y-1">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          <span class="text-sm font-medium">Receive</span>
-        </button>
-        <button onclick="showPage('page10')" class="flex-1 bg-[#2b3139] text-[#FCD535] p-3 rounded-lg flex flex-col items-center justify-center space-y-1">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-          </svg>
-          <span class="text-sm font-medium">Convert</span>
-        </button>
-        <button onclick="showPage('page7')" class="flex-1 bg-[#2b3139] text-[#FCD535] p-3 rounded-lg flex flex-col items-center justify-center space-y-1">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h18M16.5 3l4.5 4.5m0 0L16.5 12M21 7.5H3" /></svg>
-          <span class="text-sm font-medium">Swap</span>
-        </button>
-      </div>
-
-      <div class="card bg-[#2b3139] p-4 rounded-2xl shadow-lg">
-        <h3 class="text-lg font-semibold mb-3">Your Assets</h3>
-        <ul class="space-y-3">
-          <li class="flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-              <img src="https://assets.coingecko.com/coins/images/825/large/binance-coin-logo.png" alt="BNB" class="w-8 h-8 rounded-full">
-              <div>
-                <p class="font-medium">BNB</p>
-                <p class="text-xs text-gray-400">Binance Coin</p>
-              </div>
-            </div>
-            <div class="text-right">
-              <p id="bnbBalance" class="font-medium">0.00 BNB</p>
-              <p class="text-xs text-gray-400">$0.00</p>
-            </div>
-          </li>
-          <li class="flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-              <img src="https://assets.coingecko.com/coins/images/325/large/Tether-logo.png" alt="USDT" class="w-8 h-8 rounded-full">
-              <div>
-                <p class="font-medium">USDT</p>
-                <p class="text-xs text-gray-400">Tether</p>
-              </div>
-            </div>
-            <div class="text-right">
-              <p id="usdtBalance" class="font-medium">0.00 USDT</p>
-              <p class="text-xs text-gray-400">$0.00</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="card bg-[#2b3139] p-4 rounded-2xl shadow-lg">
-        <h3 class="text-lg font-semibold mb-3">Top Movers (24h)</h3>
-        <ul id="topMoversList" class="movers-list">
-            <div style="text-align:center; color:#a0aec0;">Loading top movers...</div>
-        </ul>
-      </div>
-    </main>
-    <footer class="flex justify-around items-center p-4 border-t border-[#363a45] bg-[#1E2329] fixed bottom-0 w-full z-10">
-      <button onclick="showPage('page0')" class="flex flex-col items-center text-[#FCD535]">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l-10 9h2v11h6v-7h4v7h6v-11h2l-10-9z"/></svg>
-        <span class="text-xs mt-1">Wallet</span>
-      </button>
-      <button onclick="showPage('page2')" class="flex flex-col items-center text-gray-400 hover:text-[#FCD535]">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m-4.5 4.5H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.615-2.23-1.666-2.75l-7.218-3.609a1.125 1.125 0 00-1.042 0L3.75 3.358c-1.051.52-1.666 1.615-1.666 2.75V19.5a2.25 2.25 0 002.25 2.25z" /></svg>
-        <span class="text-xs mt-1">Markets</span>
-      </button>
-      <button onclick="showPage('page1')" class="flex flex-col items-center text-gray-400 hover:text-[#FCD535]">
+    <div class="flex justify-between space-x-2">
+      <button onclick="showPage('page8')" class="flex-1 bg-[#2b3139] text-[#FCD535] p-3 rounded-lg flex flex-col items-center justify-center space-y-1">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M3 12h18m-12 6h12" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
         </svg>
-        <span class="text-xs mt-1">Trade</span>
+        <span class="text-sm font-medium">Send</span>
       </button>
-      <button onclick="showPage('page15')" class="flex flex-col items-center text-gray-400 hover:text-[#FCD535]">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 19.5a7.5 7.5 0 0114.998 0A8.25 8.25 0 0112 21.75a8.25 8.25 0 01-7.499-2.25z" /></svg>
-        <span class="text-xs mt-1">Copy Trade</span>
+      <button onclick="showPage('page6')" class="flex-1 bg-[#2b3139] text-[#FCD535] p-3 rounded-lg flex flex-col items-center justify-center space-y-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span class="text-sm font-medium">Receive</span>
       </button>
-    </footer>
-  </section>
+      <button onclick="showPage('page10')" class="flex-1 bg-[#2b3139] text-[#FCD535] p-3 rounded-lg flex flex-col items-center justify-center space-y-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+        <span class="text-sm font-medium">Convert</span>
+      </button>
+      <button onclick="showPage('page7')" class="flex-1 bg-[#2b3139] text-[#FCD535] p-3 rounded-lg flex flex-col items-center justify-center space-y-1">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h18M16.5 3l4.5 4.5m0 0L16.5 12M21 7.5H3" />
+        </svg>
+        <span class="text-sm font-medium">Swap</span>
+      </button>
+    </div>
+
+    <div class="card bg-[#2b3139] p-4 rounded-2xl shadow-lg">
+      <h3 class="text-lg font-semibold mb-3">Your Assets</h3>
+      <ul class="space-y-3">
+        <li class="flex justify-between items-center">
+          <div class="flex items-center space-x-3">
+            <img src="https://assets.coingecko.com/coins/images/825/large/binance-coin-logo.png" alt="BNB" class="w-8 h-8 rounded-full">
+            <div>
+              <p class="font-medium">BNB</p>
+              <p class="text-xs text-gray-400">Binance Coin</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p id="bnbBalance" class="font-medium">0.00 BNB</p>
+            <p class="text-xs text-gray-400">$0.00</p>
+          </div>
+        </li>
+        <li class="flex justify-between items-center">
+          <div class="flex items-center space-x-3">
+            <img src="https://assets.coingecko.com/coins/images/325/large/Tether-logo.png" alt="USDT" class="w-8 h-8 rounded-full">
+            <div>
+              <p class="font-medium">USDT</p>
+              <p class="text-xs text-gray-400">Tether</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p id="usdtBalance" class="font-medium">0.00 USDT</p>
+            <p class="text-xs text-gray-400">$0.00</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card bg-[#2b3139] p-4 rounded-2xl shadow-lg">
+      <h3 class="text-lg font-semibold mb-3">Market Performance (1h)</h3>
+      <div class="tradingview-widget-container">
+        <div id="wallet_market_chart"></div>
+      </div>
+    </div>
+  </main>
+  <footer class="flex justify-around items-center p-4 border-t border-[#363a45] bg-[#1E2329] fixed bottom-0 w-full z-10">
+    <button onclick="showPage('page0')" class="flex flex-col items-center text-[#FCD535]">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2l-10 9h2v11h6v-7h4v7h6v-11h2l-10-9z" />
+      </svg>
+      <span class="text-xs mt-1">Wallet</span>
+    </button>
+    <button onclick="showPage('page2')" class="flex flex-col items-center text-gray-400 hover:text-[#FCD535]">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m-4.5 4.5H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.615-2.23-1.666-2.75l-7.218-3.609a1.125 1.125 0 00-1.042 0L3.75 3.358c-1.051.52-1.666 1.615-1.666 2.75V19.5a2.25 2.25 0 002.25 2.25z" />
+      </svg>
+      <span class="text-xs mt-1">Markets</span>
+    </button>
+    <button onclick="showPage('page1')" class="flex flex-col items-center text-gray-400 hover:text-[#FCD535]">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M3 12h18m-12 6h12" />
+      </svg>
+      <span class="text-xs mt-1">Trade</span>
+    </button>
+    <button onclick="showPage('page15')" class="flex flex-col items-center text-gray-400 hover:text-[#FCD535]">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 19.5a7.5 7.5 0 0114.998 0A8.25 8.25 0 0112 21.75a8.25 8.25 0 01-7.499-2.25z" />
+      </svg>
+      <span class="text-xs mt-1">Copy Trade</span>
+    </button>
+  </footer>
+    
+</section>
 
   <section id="page1" class="page bg-[#1E2329] min-h-screen pt-20 hidden">
     <div class="container mx-auto p-4 text-white">
@@ -620,6 +629,58 @@
 
     </div>
   </section>
+  
+<section id="page15" class="page min-h-screen bg-[#1E2329] text-white pt-20 px-4 hidden">
+  <div class="max-w-xl mx-auto space-y-6">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold text-[#FCD535]">Copy Trade</h2>
+      <button onclick="showPage('page0')" class="text-gray-400 hover:text-[#FCD535] text-sm flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg> Back
+      </button>
+    </div>
+
+    <div class="card bg-[#2b3139] p-4 rounded-2xl shadow-lg">
+      <h3 class="text-lg font-semibold mb-3">Market Performance (1h)</h3>
+      <div class="tradingview-widget-container">
+        <div id="copy_trade_chart"></div>
+      </div>
+    </div>
+
+    <div class="card bg-[#2b3139] p-4 rounded-2xl shadow-lg">
+      <h3 class="text-lg font-semibold mb-4">Top Traders</h3>
+      <div id="expertsList" class="space-y-4">
+        <div class="flex items-center gap-4 bg-[#1e2124] rounded-xl p-4 shadow-md cursor-pointer hover:bg-[#292e33] transition">
+          <img src="https://i.pravatar.cc/60?img=1" alt="AliceTrader" class="w-12 h-12 rounded-full border-2 border-[#f0b90b]" />
+          <div class="flex flex-col">
+            <span class="text-[#f0b90b] font-bold">AliceTrader</span>
+            <span class="text-sm text-gray-300">Profit: 18.5%</span>
+            <span class="text-sm text-gray-400">1200 followers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card bg-[#2b3139] p-4 rounded-2xl shadow-lg">
+      <h3 class="text-lg font-semibold mb-4">My Portfolio</h3>
+      <div id="portfolioDisplay" class="flex overflow-x-auto space-x-4 pb-2">
+        <div class="bg-[#0b0e11] rounded-lg px-4 py-3 min-w-[120px] text-center shadow">
+          <strong class="block text-[#f0b90b]">BNB</strong>
+          <span>5.000000</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card bg-[#2b3139] p-4 rounded-2xl shadow-lg">
+      <h3 class="text-lg font-semibold mb-4">Live Copied Trades</h3>
+      <ul id="copiedTrades" class="space-y-2 text-sm text-gray-300">
+        <li>[10:15:23] AliceTrader BUY 0.01 BTC</li>
+        <li>[10:16:10] BobInvests SELL 0.05 ETH</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
   <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.js"></script>
   <script src="https://s3.tradingview.com/tv.js"></script>
@@ -854,54 +915,83 @@
                 save_image: false,
             });
         }
+
+  function loadWalletMarketChart() {
+    if (window.TradingView) {
+      new TradingView.widget({
+        container_id: "wallet_market_chart",
+        width: "100%",
+        height: 250,
+        symbol: "CRYPTOCAP:TOTAL", // A general market cap index
+        interval: "60", // 1-hour interval
+        timezone: "Etc/UTC",
+        theme: "dark",
+        style: "1",
+        locale: "en",
+        toolbar_bg: "#2b3139",
+        enable_publishing: false,
+        hide_top_toolbar: true,
+        allow_symbol_change: false,
+        save_image: false,
+      });
     }
+  }
 
-    async function fetchCoinMarketCapData() {
-      const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
-      const headers = {
-        'X-CMC_PRO_API_KEY': COINMARKETCAP_API_KEY,
-        'Accepts': 'application/json'
-      };
-      const listContainer = document.getElementById("coinMarketCapList");
-      if (!listContainer) return;
-      listContainer.innerHTML = '<p class="text-gray-400 text-center">Loading top coins...</p>';
+  function loadCopyTradeChart() {
+    if (window.TradingView) {
+      new TradingView.widget({
+        container_id: "copy_trade_chart",
+        width: "100%",
+        height: 250,
+        symbol: "BINANCE:BNBUSDT",
+        interval: "60", // 1-hour interval
+        timezone: "Etc/UTC",
+        theme: "dark",
+        style: "1",
+        locale: "en",
+        toolbar_bg: "#2b3139",
+        enable_publishing: false,
+        hide_top_toolbar: true,
+        allow_symbol_change: true,
+        save_image: false,
+      });
+    }
+  }
 
-      try {
-        const response = await axios.get(url, { headers });
-        const data = response.data.data;
+  // Update DOMContentLoaded to load the new charts
+  document.addEventListener("DOMContentLoaded", async () => {
+    const savedPage = localStorage.getItem(STORAGE_PAGE_KEY) || "page0";
+    showPage(savedPage);
+    fetchTopMovers();
+    setInterval(fetchTopMovers, 300000); // 5 minutes
 
-        if (data.length === 0) {
-          listContainer.innerHTML = '<p class="text-gray-400 text-center">No coins found.</p>';
-          return;
-        }
+    updateExpertsList();
+    renderTokenList();
+    await detectLanguageAndCurrency();
 
-        listContainer.innerHTML = '';
-
-        data.forEach(coin => {
-          const priceChange = coin.quote.USD.percent_change_24h;
-          const changeClass = priceChange >= 0 ? 'text-green-500' : 'text-red-500';
-          const changeArrow = priceChange >= 0 ? '▲' : '▼';
-          const coinItem = `
-            <div class="flex justify-between items-center py-2 border-b border-gray-600">
-              <div class="flex items-center space-x-3">
-                <div>
-                  <p class="font-medium">${coin.name}</p>
-                  <p class="text-sm text-gray-400">${coin.symbol}</p>
-                </div>
-              </div>
-              <div class="text-right">
-                <p class="font-medium">$${coin.quote.USD.price.toFixed(2)}</p>
-                <p class="text-sm ${changeClass}">${changeArrow} ${Math.abs(priceChange).toFixed(2)}%</p>
-              </div>
-            </div>
-          `;
-          listContainer.innerHTML += coinItem;
-        });
-      } catch (error) {
-        console.error("CoinMarketCap API Error:", error);
-        listContainer.innerHTML = '<p class="text-red-500 text-center">Failed to load market data. Please check your API key.</p>';
+    if (window.ethereum) {
+      const connectedWalletAddress = localStorage.getItem('connectedWallet');
+      if (connectedWalletAddress) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        walletStatus.innerText = `🔌 Wallet: ${connectedWalletAddress.slice(0, 6)}...${connectedWalletAddress.slice(-4)}`;
+        await getBalances(provider, connectedWalletAddress);
+      } else {
+        walletStatus.innerText = "🔌 Wallet: Not Connected";
       }
+    } else {
+      walletStatus.innerText = "🔌 Wallet: MetaMask not found";
     }
+
+    updateReceiveAmount();
+    updateTotalTradingBalance();
+    document.getElementById("fromToken")?.addEventListener("change", updateReceiveAmount);
+    document.getElementById("toToken")?.addEventListener("change", updateReceiveAmount);
+    document.getElementById("fromAmount")?.addEventListener("input", updateReceiveAmount);
+
+    // Call the new chart loading functions
+    loadWalletMarketChart();
+    loadCopyTradeChart();
+  });
 
     function renderTokenList() {
       const list = document.getElementById("tokenList");
